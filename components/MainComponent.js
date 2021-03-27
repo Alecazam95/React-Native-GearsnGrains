@@ -1,39 +1,98 @@
 import React, { Component } from "react";
-import { createStackNavigator } from "react-navigation-stack";
-import { createDrawerNavigator } from "react-navigation-drawer";
-import { createAppContainer } from "react-navigation";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 import Home from "./HomeComponent";
+import Menu from "./MenuComponent";
+import Cart from "./CartComponent";
+import Contact from "./ContactComponent";
+import { connect } from "react-redux";
+import {
+  fetchPizzas,
+  fetchBreads,
+  fetchBeverages,
+  fetchMenu,
+} from "../redux/ActionCreators";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { createStackNavigator } from "@react-navigation/stack";
+import MenuItemInfo from "./MenuItemInfoComponent";
 
-const HomeNavigator = createStackNavigator(
-  {
-    Home: { screen: Home },
-  },
-  {
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: "#5637DD",
-      },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        color: "#fff",
-      },
-    },
-  }
-);
+const mapDispatchToProps = {
+  fetchPizzas,
+  fetchBreads,
+  fetchBeverages,
+  fetchMenu,
+};
 
-const MainNavigator = createDrawerNavigator(
-  {
-    Home: { screen: HomeNavigator },
-  },
-  {
-    drawerBackgroundColor: "#CEC8FF",
-  }
-);
+const Stack = createStackNavigator();
 
-const AppNavigator = createAppContainer(MainNavigator);
+const MenuItemStackNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Menu" component={Menu} />
+      <Stack.Screen name="MenuItemInfo" component={MenuItemInfo} />
+    </Stack.Navigator>
+  );
+};
+
+const Tab = createBottomTabNavigator();
+
+function MyTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={"grey"} size={25} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Menu"
+        component={MenuItemStackNavigator}
+        options={{
+          tabBarLabel: "Menu",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="food-croissant"
+              color={"grey"}
+              size={25}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Contact Us"
+        component={Contact}
+        options={{
+          tabBarLabel: "Contact Us",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="phone" color={"grey"} size={25} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={Cart}
+        options={{
+          tabBarLabel: "Cart",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="cart" color={"grey"} size={25} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
 
 class Main extends Component {
+  componentDidMount() {
+    this.props.fetchPizzas();
+    this.props.fetchBreads();
+    this.props.fetchBeverages();
+  }
   render() {
     return (
       <View
@@ -43,10 +102,10 @@ class Main extends Component {
             Platform.OS === "ios" ? 0 : Expo.Constants.statusBarHeight,
         }}
       >
-        <AppNavigator />
+        <MyTabs />
       </View>
     );
   }
 }
 
-export default Main;
+export default connect(null, mapDispatchToProps)(Main);

@@ -1,23 +1,25 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
-import { MENU } from "../shared/menu";
+import { View, Button } from "react-native";
+import { Image } from "react-native-elements";
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      menu: MENU,
-    };
-  }
-
   static navigationOptions = {
     title: "Home",
   };
 
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <View>
-        <Text>This is a Test</Text>
+        <Image
+          source={require("./images/jumbo-bread-logo.jpg")}
+          style={{ width: 400, height: 500, marginBottom: 120 }}
+        />
+        <Button
+          title={"Try our new Hawaiian pizza!"}
+          onPress={() => navigate("Menu")}
+          color="#708238"
+        />
       </View>
     );
   }
