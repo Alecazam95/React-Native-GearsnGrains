@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  removeCartItem: (menuItemId) => deleteCart(menuItemId),
+  removeCartItem: (menuItemId) => removeCartItem(menuItemId),
 };
 
 class Cart extends Component {
@@ -44,26 +44,6 @@ class Cart extends Component {
       return (
         <View>
           <Text>{this.props.pizzas.errMess}</Text>
-        </View>
-      );
-    }
-    if (this.props.breads.isLoading) {
-      return <Loading />;
-    }
-    if (this.props.breads.errMess) {
-      return (
-        <View>
-          <Text>{this.props.breads.errMess}</Text>
-        </View>
-      );
-    }
-    if (this.props.beverages.isLoading) {
-      return <Loading />;
-    }
-    if (this.props.beverages.errMess) {
-      return (
-        <View>
-          <Text>{this.props.beverages.errMess}</Text>
         </View>
       );
     }

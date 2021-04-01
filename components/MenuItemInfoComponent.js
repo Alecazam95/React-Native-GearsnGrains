@@ -8,8 +8,6 @@ import { baseUrl } from "../shared/baseUrl";
 const mapStateToProps = (state) => {
   return {
     pizzas: state.pizzas,
-    breads: state.breads,
-    beverages: state.beverages,
     cart: state.cart,
   };
 };

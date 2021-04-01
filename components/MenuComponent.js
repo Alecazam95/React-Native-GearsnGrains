@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
     pizzas: state.pizzas,
     breads: state.breads,
     beverages: state.beverages,
+    menu: state.menu,
   };
 };
 
@@ -61,11 +62,14 @@ class Menu extends Component {
         </View>
       );
     }
+
     return (
       <ScrollView>
         <Text style={styles.h1}>Pizzas</Text>
         <FlatList
-          data={this.props.pizzas.pizzas}
+          data={this.props.pizzas.pizzas.filter(
+            (menuItem) => menuItem.type === "pizza"
+          )}
           renderItem={renderMenuItem}
           keyExtractor={(item) => item.id}
         />
